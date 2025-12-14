@@ -111,7 +111,10 @@ Dashboard: http://localhost:8000/
 
 Health: http://localhost:8000/health
 
-Notes & Roadmap
+
+---
+
+## Notes & Roadmap
 
 Kubernetes deployment is intentionally not auto-executed in CI/CD
 
