@@ -90,7 +90,7 @@ jobs:
           docker push $IMAGE_NAME:sha-${{ github.sha }}
 
 
-      - name: COmmit VERSION bump
+      - name: Commit VERSION bump
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
