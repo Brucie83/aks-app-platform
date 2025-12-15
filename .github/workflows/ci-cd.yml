@@ -80,13 +80,13 @@ jobs:
       - name: Build Image
         run: |
           docker build \
-            -t $IMAGE_NAME:{{ env.VERSION }} \
+            -t $IMAGE_NAME:$VERSION \
             -t $IMAGE_NAME:sha-${{ github.sha }} \
             ./app
     
       - name: Push image to GHCR
         run: |
-          docker push $IMAGE_NAME:{{ env.VERSION }}
+          docker push $IMAGE_NAME:$VERSION \
           docker push $IMAGE_NAME:sha-${{ github.sha }}
 
 
