@@ -33,6 +33,7 @@ steps:
 - script: |
     echo "Running Trivy image scan"
     trivy image \
+      --scanners vuln \
       --severity HIGH,CRITICAL\
       --exit-code 1 \
       --no-progress \
