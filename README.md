@@ -78,8 +78,9 @@ automation, while Azure DevOps demonstrates security gating on a
 self-hosted enterprise-style agent.
 
 
-Different CI platforms are intentionally used to showcase design decisions
-around security, control, and execution environments.
+> Different CI platforms are intentionally used to showcase design decisions
+> around security, control, and execution environments.
+
 
 
 ### CD (Continuous Deployment)
