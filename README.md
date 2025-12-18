@@ -42,7 +42,13 @@ The Dockerfile is optimized for:
 
 ## CI/CD Pipeline
 
-This repository includes an **enterprise-style CI/CD pipeline** implemented with GitHub Actions.
+This repository includes enterprise-style CI pipelines implemented using
+multiple CI platforms to demonstrate tooling-agnostic platform design.
+
+- GitHub Actions: primary CI pipeline
+- Azure DevOps: alternative CI pipeline using a self-hosted agent
+
+
 
 ### CI (Continuous Integration)
 
@@ -55,6 +61,26 @@ CI responsibilities:
 - run the container
 - validate the `/health` endpoint
 - fail fast if the application is unhealthy
+
+
+### Security & Image Scanning
+
+Container image vulnerability scanning is implemented in the Azure DevOps
+pipeline using Trivy.
+
+This pipeline performs:
+- image vulnerability scanning before publishing
+- blocking on HIGH and CRITICAL vulnerabilities
+- documented and temporary CVE exceptions when mitigated by architecture
+
+The GitHub Actions pipeline intentionally focuses on build and release
+automation, while Azure DevOps demonstrates security gating on a
+self-hosted enterprise-style agent.
+
+
+Different CI platforms are intentionally used to showcase design decisions
+around security, control, and execution environments.
+
 
 ### CD (Continuous Deployment)
 
