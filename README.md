@@ -46,7 +46,7 @@ This repository includes enterprise-style CI pipelines implemented using
 multiple CI platforms to demonstrate tooling-agnostic platform design.
 
 - GitHub Actions: primary CI pipeline
-- Azure DevOps: alternative CI pipeline using a self-hosted agent
+- Azure DevOps: complementary CI pipeline using a self-hosted agent
 
 
 
