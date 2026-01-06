@@ -117,7 +117,7 @@ jobs:
         run: |
           echo "Using version: $VERSION"
           test -n "${VERSION}"
-          git clone https://x-access-token:${GITOPS_TOKEN}@github.com/brucie83/gitops-aks-platform.git
+          git clone https://x-access-token:${GITOPS_TOKEN}@github.com/bruno-diaz-dev/gitops-aks-platform.git
           cd gitops-aks-platform
 
           sed -i "s|image: .*|image: ghcr.io/bruno-diaz-dev/container-health:${VERSION}|" ./apps/container-health/deployment.yaml
