@@ -1,6 +1,6 @@
 platform:
   - changed-files:
-    - any-glob-to-any-file: 'platform/**'
+      - any-glob-to-any-file: 'platform/**'
 
 kubernetes:
   - changed-files:
