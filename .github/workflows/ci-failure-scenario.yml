@@ -15,4 +15,3 @@ jobs:
           echo "Validating platform policies"
           echo "Policy violation detected!"
           exit 1
-          
