@@ -1,0 +1,17 @@
+name: CI Failure Scenario
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  quality-gate:
+    name: Quality Gate (Intentional Failure)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Simulate policy validation
+        run: |
+          echo "Validating platform policies"
+          echo "Policy violation detected!"
+          exit 1
