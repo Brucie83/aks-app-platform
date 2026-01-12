@@ -95,6 +95,10 @@ jobs:
           TAG="${{ inputs.image_tag }}"
           DEV_TAG_FILE="platform/apps/container-health/dev/image-tag.txt"
 
+          echo "Validating promotion order..."
+          echo "Target environment: $ENV"
+          echo "Image tag: $TAG"
+
           if [ "$ENV" == "dev"]; then
             echo "Promoting to dev; no prior validation required"
             exit 0 # OK
