@@ -1,0 +1,78 @@
+name: Auto Rollback - Dev
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "platform/apps/container-health/dev/image-tag.txt"
+
+jobs:
+  rollback-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Read new image tag
+        id: read_new
+        run: |
+          NEW_TAG=$(cat platform/apps/container-health/dev/image-tag.txt | tr -d '[:space:]')
+          echo "new_tag=$NEW_TAG" >> $GITHUB_OUTPUT
+
+      - name: Read previous image tag
+        id: read_prev
+        run: |
+          PREV_TAG=$(git show HEAD~1:platform/apps/container-health/dev/image-tag.txt | tr -d '[:space:]')
+          echo "prev_tag=$PREV_TAG" >> $GITHUB_OUTPUT
+
+      - name: Check if rollback needed
+        id: check
+        run: |
+          echo "Checking rollout status for dev environment..."
+
+          # 🔴 Simulated rollout check (replace later with kubectl / ArgoCD)
+          DEPLOY_OK=false
+
+          if [ "$DEPLOY_OK" = true ]; then
+            echo "rollback=false" >> $GITHUB_OUTPUT
+            echo "Deployment healthy. No rollback needed."
+            exit 0
+          fi
+
+          echo "rollback=true" >> $GITHUB_OUTPUT
+          echo "Deployment unhealthy. Rollback required."
+
+      - name: Automatic Rollback
+        if: steps.check.outputs.rollback == 'true'
+        run: |
+          NEW_TAG="${{ steps.read_new.outputs.new_tag }}"
+          PREV_TAG="${{ steps.read_prev.outputs.prev_tag }}"
+
+          git checkout -b rollback-dev-$NEW_TAG
+
+          echo "$PREV_TAG" > platform/apps/container-health/dev/image-tag.txt
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add platform/apps/container-health/dev/image-tag.txt
+          git commit -m "chore(rollback): revert container-health dev to $PREV_TAG"
+
+          git push origin rollback-dev-$NEW_TAG
+
+      - name: Create Rollback Pull Request
+        if: steps.check.outputs.rollback == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW_TAG="${{ steps.read_new.outputs.new_tag }}"
+          PREV_TAG="${{ steps.read_prev.outputs.prev_tag }}"
+
+          gh pr create \
+            --base main \
+            --head rollback-dev-$NEW_TAG \
+            --title "chore(rollback): revert container-health dev to $PREV_TAG" \
+            --body "Automatic rollback to previously known-good image \`$PREV_TAG\` after failed dev deployment."
