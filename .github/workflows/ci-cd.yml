@@ -99,17 +99,19 @@ jobs:
           echo "Target environment: $ENV"
           echo "Image tag: $TAG"
 
-          if [ "$ENV" == "dev"]; then
-            echo "Promoting to dev; no prior validation required"
-            exit 0 # OK
-          fi
+          case "$ENV" in
+            dev)
+              echo "Promoting to dev; no prior validation needed."
+              exit 0 # OK
+              ;;
+          esac
 
           if [ ! -f "$DEV_TAG_FILE" ]; then
             echo "ERROR: Dev image-tag file not found. Cannot promote to $ENV"
             exit 1 # ERROR
           fi
 
-          DEV_TAG=$(cat "$DEV_TAG_FILE" | tr -d '\n')
+          DEV_TAG="$(cat "$DEV_TAG_FILE" | tr -d '[:space:]')"
 
           if [ "$DEV_TAG" != "$TAG" ]; then
             echo "ERROR: Image '$TAG' has not been promoted to dev."
